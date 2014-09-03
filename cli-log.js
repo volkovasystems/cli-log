@@ -43,8 +43,8 @@
 	@include:
 	@end-include
 */
-var cliLog = function cliLog( logLine, commandLineInterface, cliEnvironmentVariableSet ){
-	if( LOG_ON_COMMAND_PATTERN.test( logLine ) ){
+var cliLog = function cliLog( ){
+	/*if( LOG_ON_COMMAND_PATTERN.test( logLine ) ){
 		cliEnvironmentVariableSet.LOG_STATE = true;
 		return;
 	}
@@ -57,7 +57,7 @@ var cliLog = function cliLog( logLine, commandLineInterface, cliEnvironmentVaria
 	if( cliEnvironmentVariableSet.LOG_STATE ){
 		console.log( logLine );
 		return;
-	}
+	}*/
 };
 
 const LOG_ON_COMMAND_PATTERN = /^\@log\:\s*[Oo][Nn]\s*$/;
