@@ -43,21 +43,27 @@
 	@include:
 	@end-include
 */
-var cliLog = function cliLog( ){
-	/*if( LOG_ON_COMMAND_PATTERN.test( logLine ) ){
-		cliEnvironmentVariableSet.LOG_STATE = true;
-		return;
-	}
+var cliLog = function cliLog( CLI, specificNamespace ){
 
-	if( LOG_OFF_COMMAND_PATTERN.test( logLine ) ){
-		cliEnvironmentVariableSet.LOG_STATE = false;
-		return;
-	}
+	CLI.SESSION.CLI_LOG = "cli-log";
 
-	if( cliEnvironmentVariableSet.LOG_STATE ){
-		console.log( logLine );
-		return;
-	}*/
+	this.listenToEvent( CLI.EVENT.LINE_STRING_MODIFIED, specificNamespace,
+		function cliLog( line, commandLineInterface ){
+			if( LOG_ON_COMMAND_PATTERN.test( line ) ){
+				this.transformAsCLISession( CLI.SESSION.CLI_LOG, specificNamespace, [ CLI.SESSION.CLI_ECHO ] );
+				return;
+			}
+
+			if( LOG_OFF_COMMAND_PATTERN.test( line ) ){
+				this.fireEvent( CLI.EVENT.CLI_SESSION_ENDED, specificNamespace, CLI.SESSION.CLI_LOG );
+				return;
+			}
+
+			if( this.checkIfOnCLISession( CLI.SESSION.CLI_LOG ) ){
+				console.log( line );
+				return;
+			}
+		} );
 };
 
 const LOG_ON_COMMAND_PATTERN = /^\@log\:\s*[Oo][Nn]\s*$/;
